@@ -1,0 +1,121 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/cabinet/protos/Cabinet.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/tables/protos/Table.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/chairs/protos/Chair.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/bedroom/protos/Bed.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/humans/pedestrian/protos/Pedestrian.proto"
+EXTERNPROTO "../protos/NaoV6.proto"
+
+WorldInfo {
+  info [
+    "A simple Hospital environment with a patient bed."
+  ]
+  title "Hospital World"
+  basicTimeStep 20
+  FPS 20
+  contactProperties [
+    ContactProperties {
+      material1 "NAO foot material"
+      coulombFriction [
+        7
+      ]
+      bounce 0.3
+      bounceVelocity 0.003
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.0743284362374817 0.9912126582824348 -0.10942006044213269 0.8352044715307531
+  position -16.25553545619954 7.175150802113735 22.336146060619594
+  follow "NurseNao"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 10 10
+  floorTileSize 1 1
+  floorAppearance PBRAppearance {
+    baseColor 0.9 0.9 0.95
+    roughness 0.2
+    metalness 0
+  }
+  wallThickness 0.2
+  wallHeight 2.5
+}
+Bed {
+  translation 3.85 1.49705 0
+  rotation 0 0 1 3.14
+  name "Patient Bed"
+}
+Cabinet {
+  translation 4.92 3.49763 0
+  rotation 0 0 1 3.14
+}
+Table {
+  translation 3.5 -4.41 0
+  size 1.2 0.8 0.74
+}
+Chair {
+  translation 3.33044 -3.92975 0
+  rotation 0 0 1 -1.57
+}
+DEF robot NaoV6 {
+  translation -0.9999831665229574 -7.885289736117527e-11 0.32996291510685766
+  rotation 4.213163582164211e-06 0.9999999999911008 -2.1819303192650863e-07 5.218746789331934e-05
+  name "NurseNao"
+  color 0.9 0.9 0.9
+}
+Pedestrian {
+  translation 1.9974 -1.09 1.28
+  rotation 0 0 1 3.14
+  name "Doctor"
+  shirtColor 1 1 1
+  pantsColor 0.2 0.4 0.8
+}
+Pedestrian {
+  translation 2.1099999999999994 -2.5 1.2459090909090909
+  rotation 0 0 1 3.141592653589793
+  name "older person"
+  #controllerArgs [
+  #  "--speed=0.5"
+  #  "--trajectory=1.0 0, 4.0 0, 4.0 -2.5, 1.0 -2.5"
+  #]
+  shirtColor 0.6 0.4 0.2
+  pantsColor 0.3 0.3 0.3
+  rightLegAngle -0.16136363636363885
+  rightLowerLegAngle 0.9336363636363665
+  rightFootAngle 0.012727272727273087
+  leftLegAngle -0.617272727272727
+  leftLowerLegAngle 0.6968181818181827
+  leftFootAngle -0.14727272727272633
+  rightArmAngle -0.6099999999999994
+  rightLowerArmAngle -0.08590909090909037
+  rightHandAngle 0.07090909090909121
+  leftArmAngle 0.5936363636363632
+  leftLowerArmAngle -0.43318181818181845
+  leftHandAngle 0.0818181818181813
+  headAngle 0.1431818181818184
+}
+Solid {
+  translation 0 0 0.005
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.1 0.3 0.1
+        roughness 1
+        metalness 0
+      }
+      geometry DEF CARPET_SHAPE Box {
+        size 4 4 0.01
+      }
+    }
+  ]
+  name "Carpet"
+  boundingObject USE CARPET_SHAPE
+}

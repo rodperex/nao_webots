@@ -1,0 +1,60 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "../protos/NaoV6.proto"
+EXTERNPROTO "../protos/NaoJersey.proto"
+
+WorldInfo {
+  info [
+    "Aldebaran's Nao H25 V5.0"
+    "NAO is a programmable, 57-cm tall humanoid robot."
+    "The body has 25 degrees of freedom (DOF)."
+  ]
+  title "Aldebaran's Nao"
+  basicTimeStep 20
+  FPS 20
+  contactProperties [
+    ContactProperties {
+      material1 "NAO foot material"
+      coulombFriction [
+        7
+      ]
+      bounce 0.3
+      bounceVelocity 0.003
+    }
+  ]
+}
+
+Viewpoint {
+  # Adjusted camera to look at the center (0 0 0)
+  orientation 0.11 0.04 -0.99 2.32
+  position 1.5 1.5 0.8
+  follow "Blue5"
+}
+
+TexturedBackground {
+}
+
+TexturedBackgroundLight {
+}
+
+Floor {
+  rotation 0 0 1 1.57079632679
+  size 25 25
+  tileSize 0.8 0.8
+}
+
+DEF Blue5 NaoV6 {
+  # Moved to Center (X=0, Y=0). Z stays at 0.334 to ensure feet are on floor.
+  translation 0 0 0.334
+  rotation 0 0 1 -1.57
+  name "Blue5"
+  jersey NaoJersey {
+    jerseyTexture [
+      "../protos/textures/nao_jersey_dark_5.png"
+    ]
+    jerseyColor 0 0.75 1
+  }
+}

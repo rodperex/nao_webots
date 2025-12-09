@@ -6,6 +6,27 @@ import argparse
 import umsgpack
 from imageserver import ImageServer, CamIndex
 
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
+import numpy as np
+
+class CameraPublisher(Node):
+    def __init__(self):
+        super().__init__('camera_publisher')
+        self.publisher_ = self.create_publisher(Image, '/image_rgb', 10)
+        self.bridge = CvBridge()
+
+    def publish_image(self, image_data, width, height):
+        image_np = np.frombuffer(image_data, dtype=np.uint8).reshape((height, width, 4))
+        image_np = image_np[:, :, :3] 
+        image_msg = self.bridge.cv2_to_imgmsg(image_np, encoding="bgr8")
+        image_msg.header.frame_id = "CameraTop_frame"
+        image_msg.header.stamp = self.get_clock().now().to_msg()
+
+        self.publisher_.publish(image_msg)
+
 class Nao (Robot):
     SOCK_PATH = "/tmp/robocup"
     TCP_BASE_PORT = 10000
@@ -405,6 +426,9 @@ class Nao (Robot):
     def __init__(self):
         Robot.__init__(self)
 
+        rclpy.init()
+        self.camera_publisher = CameraPublisher()
+
         self.tick = 0
 
         self.parse_args();
@@ -448,7 +472,7 @@ class Nao (Robot):
         conn = None
         imgCounter = self.frametime
 
-        while True:
+        while rclpy.ok():
             if self.stepBegin(self.timeStep) == -1:
                 break
 
@@ -475,9 +499,15 @@ class Nao (Robot):
                 # send images on average every self.frametime milliseconds in simulation time
                 imgCounter -= self.timeStep
                 if self.args.camera and imgCounter <= 0:
-                    self.topImageServer.send(self.tick, self.cameraTop.getImage())
+                    image_data_top = self.cameraTop.getImage()
+                    width_top = self.cameraTop.getWidth()
+                    height_top = self.cameraTop.getHeight()
+                    self.topImageServer.send(self.tick, image_data_top)
                     self.bottomImageServer.send(self.tick, self.cameraBottom.getImage())
                     imgCounter += self.frametime
+
+                    # ROS publisher
+                    self.camera_publisher.publish_image(image_data_top, width_top, height_top)
             else:
                 try:
                     (conn, addr) = sock.accept()
@@ -496,6 +526,7 @@ class Nao (Robot):
 
         # remove socket on exit
         os.unlink(self.SOCK_PATH)
+        rclpy.shutdown()
 
         # stop image threads
         if self.args.camera:
