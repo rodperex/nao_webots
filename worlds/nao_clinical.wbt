@@ -6,7 +6,9 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/cabinet/protos/Cabinet.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/tables/protos/Table.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/chairs/protos/Chair.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/living_room_furniture/protos/Sofa.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/bedroom/protos/Bed.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/television/protos/Television.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/humans/pedestrian/protos/Pedestrian.proto"
 EXTERNPROTO "../protos/NaoV6.proto"
 
@@ -20,6 +22,7 @@ WorldInfo {
   contactProperties [
     ContactProperties {
       material1 "NAO foot material"
+      material2 "floor"
       coulombFriction [
         7
       ]
@@ -29,8 +32,8 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.0743284362374817 0.9912126582824348 -0.10942006044213269 0.8352044715307531
-  position -16.25553545619954 7.175150802113735 22.336146060619594
+  orientation -0.14165290350334844 -0.9678371453487038 -0.20790794841069238 5.308196793630691
+  position -10.803498671674527 -3.101693848586308 11.604759399823035
   follow "NurseNao"
 }
 TexturedBackground {
@@ -38,10 +41,11 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 RectangleArena {
+  contactMaterial "floor"
   floorSize 10 10
   floorTileSize 1 1
   floorAppearance PBRAppearance {
-    baseColor 0.9 0.9 0.95
+    baseColor 0.5 0.5 0.5
     roughness 0.2
     metalness 0
   }
@@ -65,9 +69,67 @@ Chair {
   translation 3.33044 -3.92975 0
   rotation 0 0 1 -1.57
 }
+Cabinet {
+  translation -4.57116 4.92909 0
+  rotation 0 0 1 -1.57
+  name "TV Stand"
+}
+Television {
+  translation -4.95728 0.05873 0.81
+  rotation 0 0 1 0.000796322
+}
+Sofa {
+  translation -2.50052 1.67 0
+  rotation 0 0 1 -3.1407953071795864
+  color 1 0 0
+}
+Sofa {
+  translation -2.4979 -1.57 0
+  rotation 0 0 1 -3.1407953071795864
+  name "sofa_1"
+  color 0.5 0.5 1
+}
+Solid {
+  translation -2.5 -2.7 0.25
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.6 0.4
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.4 0.4 0.5
+      }
+    }
+  ]
+  name "obstacle"
+  boundingObject Box {
+    size 0.4 0.4 0.5
+  }
+}
+Solid {
+  translation -2.5 2.81 0.25
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.6 0.4
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.4 0.4 0.5
+      }
+    }
+  ]
+  name "obstacle(1)"
+  boundingObject Box {
+    size 0.4 0.4 0.5
+  }
+}
 DEF robot NaoV6 {
-  translation -0.9999831665229574 -7.885289736117527e-11 0.32996291510685766
-  rotation 4.213163582164211e-06 0.9999999999911008 -2.1819303192650863e-07 5.218746789331934e-05
+  translation -0.9759256267589823 0.4160466903742558 0.3326995482789711
+  rotation -7.874712431084268e-05 9.208012712119875e-05 0.9999999926600702 -3.1310418671634164
   name "NurseNao"
   color 0.9 0.9 0.9
 }
@@ -82,10 +144,6 @@ Pedestrian {
   translation 2.1099999999999994 -2.5 1.2459090909090909
   rotation 0 0 1 3.141592653589793
   name "older person"
-  #controllerArgs [
-  #  "--speed=0.5"
-  #  "--trajectory=1.0 0, 4.0 0, 4.0 -2.5, 1.0 -2.5"
-  #]
   shirtColor 0.6 0.4 0.2
   pantsColor 0.3 0.3 0.3
   rightLegAngle -0.16136363636363885
@@ -101,21 +159,4 @@ Pedestrian {
   leftLowerArmAngle -0.43318181818181845
   leftHandAngle 0.0818181818181813
   headAngle 0.1431818181818184
-}
-Solid {
-  translation 0 0 0.005
-  children [
-    Shape {
-      appearance PBRAppearance {
-        baseColor 0.1 0.3 0.1
-        roughness 1
-        metalness 0
-      }
-      geometry DEF CARPET_SHAPE Box {
-        size 4 4 0.01
-      }
-    }
-  ]
-  name "Carpet"
-  boundingObject USE CARPET_SHAPE
 }
