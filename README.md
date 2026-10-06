@@ -1,4 +1,12 @@
-# Webots LoLa Controller
+# nao_webots
+
+Webots worlds and LoLa controller to simulate the Nao robot with [nao_ros2](https://github.com/geriabot/nao_ros2).
+
+Based on [Bembelbots/WebotsLoLaController](https://github.com/Bembelbots/WebotsLoLaController), including the publication of the top camera as a ROS 2 topic (`/image_raw`) from [andoniroldan/WebotsLoLaController](https://github.com/andoniroldan/WebotsLoLaController/tree/ros2_camera_publish). This repository adds the worlds `nao_indoors.wbt`, `nao_clinical.wbt` and `nao_demo.wbt`.
+
+Because of the camera publication, the controller also needs ROS 2 (`rclpy`, `cv_bridge`): source your ROS 2 workspace before launching Webots.
+
+## Webots LoLa Controller
 
 This webots controller implements the LoLa interface for Nao V6 as used by RoboCup SPL. For details on LoLa packet structure, please refer to the official LoLa documentation.
 
